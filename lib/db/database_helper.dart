@@ -86,4 +86,12 @@ class DatabaseHelper {
     final db = await database;
     return await db!.query('HighScoreSnake', orderBy: 'score DESC');
   }
+
+  Future<void> resetHighScores() async {
+    final db = await database;
+    await db!.delete(
+        'HighScoreTetris'); // Menghapus semua data dari tabel HighScoreTetris
+    await db.delete(
+        'HighScoreSnake'); // Menghapus semua data dari tabel HighScoreSnake
+  }
 }

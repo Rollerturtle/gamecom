@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'mino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gamecom/db/database_helper.dart';
+import 'package:gamecom/game_menu.dart';
 
 class GameBoard extends StatefulWidget {
   @override

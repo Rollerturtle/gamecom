@@ -6,7 +6,6 @@ import 'package:gamecom/games/tetris/game_board.dart';
 import 'package:gamecom/db/database_helper.dart';
 import 'package:collection/collection.dart';
 
-
 import 'dart:math';
 
 class GameMenu extends StatelessWidget {
@@ -56,6 +55,7 @@ class GameMenu extends StatelessWidget {
                 circButton(FontAwesomeIcons.info, context),
                 circButton(FontAwesomeIcons.medal, context),
                 circButton(FontAwesomeIcons.lightbulb, context),
+                circButton(FontAwesomeIcons.refresh, context),
               ],
             ),
             Wrap(
@@ -98,21 +98,31 @@ Padding circButton(IconData icon, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4.0),
     child: RawMaterialButton(
-      onPressed: () async {  // Mark the function as async
+      onPressed: () async {
+        // Mark the function as async
         if (icon == FontAwesomeIcons.info) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Versi'),
+                backgroundColor: Color(0xFF1E1E1E), // Dark background color
+                title: Text(
+                  'Versi',
+                  style: TextStyle(color: Colors.white), // White text color
+                ),
                 content: Text(
-                    '1.0.0'),
+                  '0.5.2',
+                  style: TextStyle(color: Colors.white), // White text color
+                ),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Tutup'),
+                    child: Text(
+                      'Tutup',
+                      style: TextStyle(color: Colors.white), // White text color
+                    ),
                   ),
                 ],
               );
@@ -121,19 +131,43 @@ Padding circButton(IconData icon, BuildContext context) {
         } else if (icon == FontAwesomeIcons.medal) {
           List<Map<String, dynamic>> snakeHighScores =
               await DatabaseHelper().getHighScoresSnake();
+          List<Map<String, dynamic>> tetrisHighScores = await DatabaseHelper()
+              .getHighScoresTetris(); // Menambahkan ini untuk mendapatkan skor tertinggi Tetris
+
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Leaderboard'),
+                backgroundColor: Color(0xFF1E1E1E), // Dark background color
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(FontAwesomeIcons.medal, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text(
+                      'Leaderboard',
+                      style: TextStyle(color: Colors.white), // White text color
+                    ),
+                  ],
+                ),
                 content: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Snake :'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(), // Spacer untuk menempatkan logo cube di tengah
+                        FaIcon(FontAwesomeIcons.cube, color: Colors.white),
+                        SizedBox(width: 8),
+                        Spacer(), // Spacer tambahan jika diperlukan
+                      ],
+                    ),
                     SizedBox(height: 8),
                     Table(
-                      border: TableBorder.all(),
+                      border: TableBorder.all(
+                        color: Colors.white, // Set color to white
+                      ),
                       children: [
                         TableRow(
                           children: [
@@ -142,7 +176,10 @@ Padding circButton(IconData icon, BuildContext context) {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   'Username',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white, // Putih
+                                  ),
                                 ),
                               ),
                             ),
@@ -151,7 +188,10 @@ Padding circButton(IconData icon, BuildContext context) {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   'Skor',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),
@@ -159,27 +199,110 @@ Padding circButton(IconData icon, BuildContext context) {
                         ),
                         // Sort the scores in descending order
                         ...snakeHighScores
-                            .where((scoreEntry) => scoreEntry['playerName'] != null)
+                            .where((scoreEntry) =>
+                                scoreEntry['playerName'] != null)
                             .toList()
                             .cast<Map<String, dynamic>>()
                             .sorted((a, b) => b['score'].compareTo(a['score']))
-                            .take(3) // Take only the top 3 scores
+                            .take(3)
                             .map((scoreEntry) => TableRow(
+                                  children: [
+                                    TableCell(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            scoreEntry['playerName'].toString(),
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            scoreEntry['score'].toString(),
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                  ],
+                                ))
+                            .toList(),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(FontAwesomeIcons.shapes,
+                            color: Colors.white), // Ikon shapes
+                        SizedBox(width: 8),
+                      ],
+                    ), // Menampilkan judul tabel Tetris
+                    SizedBox(height: 8),
+                    Table(
+                      border: TableBorder.all(
+                        color: Colors.white, // Set color to white
+                      ),
+                      children: [
+                        TableRow(
                           children: [
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(scoreEntry['playerName'].toString()),
+                                child: Text(
+                                  'Username',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(scoreEntry['score'].toString()),
+                                child: Text(
+                                  'Skor',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
-                        ))
+                        ),
+                        // Menampilkan data skor tertinggi Tetris di sini
+                        ...tetrisHighScores
+                            .where((scoreEntry) =>
+                                scoreEntry['playerName'] != null)
+                            .toList()
+                            .cast<Map<String, dynamic>>()
+                            .sorted((a, b) => b['score'].compareTo(a['score']))
+                            .take(3)
+                            .map((scoreEntry) => TableRow(
+                                  children: [
+                                    TableCell(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            scoreEntry['playerName'].toString(),
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                            scoreEntry['score'].toString(),
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                  ],
+                                ))
                             .toList(),
                       ],
                     ),
@@ -190,7 +313,10 @@ Padding circButton(IconData icon, BuildContext context) {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Close'),
+                    child: Text(
+                      'Close',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               );
@@ -215,19 +341,100 @@ Padding circButton(IconData icon, BuildContext context) {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Game Tip'),
-                content: Text(randomTip),
+                backgroundColor: Color(0xFF1E1E1E), // Dark background color
+                title: Text(
+                  'Game Tip',
+                  style: TextStyle(color: Colors.white), // White text color
+                ),
+                content: Text(
+                  randomTip,
+                  style: TextStyle(color: Colors.white), // White text color
+                ),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Close'),
+                    child: Text(
+                      'Close',
+                      style: TextStyle(color: Colors.white), // White text color
+                    ),
                   ),
                 ],
               );
             },
           );
+        } else if (icon == FontAwesomeIcons.refresh) {
+          // Tampilkan dialog konfirmasi sebelum mereset highscore
+          bool resetConfirmed = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: Color(0xFF1E1E1E), // Dark background color
+                title: Text(
+                  'Reset Highscore',
+                  style: TextStyle(color: Colors.white), // White text color
+                ),
+                content: Text(
+                  'Anda yakin ingin mereset highscore?',
+                  style: TextStyle(color: Colors.white), // White text color
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(false); // Batalkan reset
+                    },
+                    child: Text(
+                      'Batal',
+                      style: TextStyle(color: Colors.white), // White text color
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true); // Konfirmasi reset
+                    },
+                    child: Text(
+                      'Reset',
+                      style: TextStyle(color: Colors.white), // White text color
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+
+          // Jika pengguna mengonfirmasi reset, reset highscore
+          if (resetConfirmed) {
+            await DatabaseHelper().resetHighScores();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: Color(0xFF1E1E1E), // Dark background color
+                  title: Text(
+                    'Highscore Reset',
+                    style: TextStyle(color: Colors.white), // White text color
+                  ),
+                  content: Text(
+                    'Highscore telah direset.',
+                    style: TextStyle(color: Colors.white), // White text color
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'OK',
+                        style:
+                            TextStyle(color: Colors.white), // White text color
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       },
       fillColor: Colors.white,
