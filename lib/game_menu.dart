@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamecom/games/minesweeper/view.dart';
 import 'package:gamecom/games/snake/snake_name.dart';
 import 'package:gamecom/games/tetris/game_board.dart';
+import 'package:gamecom/db/database_helper.dart';
+
 import 'dart:math';
 
 class GameMenu extends StatelessWidget {
@@ -94,9 +96,8 @@ Padding circButton(IconData icon, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4.0),
     child: RawMaterialButton(
-      onPressed: () {
+      onPressed: () async {  // Mark the function as async
         if (icon == FontAwesomeIcons.info) {
-          // Menampilkan versi aplikasi pada dialog saat tombol info ditekan
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -116,7 +117,8 @@ Padding circButton(IconData icon, BuildContext context) {
             },
           );
         } else if (icon == FontAwesomeIcons.medal) {
-          // Menampilkan popup tabel kosong saat tombol medal ditekan
+          List<Map<String, dynamic>> snakeHighScores =
+              await DatabaseHelper().getHighScoresSnake();
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -126,23 +128,49 @@ Padding circButton(IconData icon, BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('Table 1:'),
+                    Text('Snake :'),
                     SizedBox(height: 8),
-                    // Tabel kosong pertama
                     Table(
                       border: TableBorder.all(),
                       children: [
-                        // Isi tabel dapat ditambahkan di sini
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Text('Table 2:'),
-                    SizedBox(height: 8),
-                    // Tabel kosong kedua
-                    Table(
-                      border: TableBorder.all(),
-                      children: [
-                        // Isi tabel dapat ditambahkan di sini
+                        TableRow(
+                          children: [
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Username',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                            TableCell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Skor',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        for (var scoreEntry in snakeHighScores)
+                          TableRow(
+                            children: [
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      scoreEntry['playerName'].toString()),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(scoreEntry['score'].toString()),
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ],
@@ -159,25 +187,20 @@ Padding circButton(IconData icon, BuildContext context) {
             },
           );
         } else if (icon == FontAwesomeIcons.lightbulb) {
-          // Menampilkan tips secara random saat tombol lightbulb ditekan
           final List<String> tips = [
             'Tip 1: Rencanakan penempatan blok dengan cermat untuk memaksimalkan ruang dan menghindari terbentuknya celah yang sulit diisi.',
             'Tip 2: Pahami berbagai cara merotasi blok untuk menyesuaikan dengan kebutuhan ruang yang ada di papan permainan.',
-            'Tip 3: DPrioritaskan untuk membersihkan baris-baris penuh secepat mungkin untuk menghindari tumpukan blok yang tinggi.',
+            'Tip 3: Prioritaskan untuk membersihkan baris-baris penuh secepat mungkin untuk menghindari tumpukan blok yang tinggi.',
             'Tip 4: Kendalikan ular dengan hati-hati untuk menghindari menabrak diri sendiri atau tepi layar.',
             'Tip 5: Perhatikan rencana jangka panjang untuk menghindari posisi yang sulit dikeluarkan.',
             'Tip 6: Rencanakan penempatan blok dengan cermat untuk memaksimalkan ruang dan menghindari terbentuknya celah yang sulit diisi.',
             'Tip 7: Gunakan angka-angka di sekitar kotak untuk menganalisis dan menentukan letak ranjau.',
             'Tip 8: Gunakan dinding ular sendiri untuk memotong jalur dan mendapatkan makanan dengan efisien.',
             'Tip 9: Mulai mengungkapkan kotak dari pinggir untuk memaksimalkan informasi yang diperoleh.',
-
-            // Tambahkan lebih banyak tips sesuai kebutuhan
           ];
 
-          // Mengambil tip secara acak dari daftar tips
           final String randomTip = tips[Random().nextInt(tips.length)];
 
-          // Menampilkan tip pada dialog
           showDialog(
             context: context,
             builder: (BuildContext context) {
