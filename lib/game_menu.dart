@@ -59,7 +59,7 @@ class GameMenu extends StatelessWidget {
               children: [
                 modeButton(
                   'Tetris',
-                  'Classic Tetris Game',
+                  'Game Tetris Klasik',
                   FontAwesomeIcons.shapes,
                   Colors.red,
                   width,
@@ -67,7 +67,7 @@ class GameMenu extends StatelessWidget {
                 ),
                 modeButton(
                   'Snake Game',
-                  'I Love Python',
+                  'Merayap hingga jadi besar!',
                   FontAwesomeIcons.cube,
                   Colors.green,
                   width,
@@ -75,7 +75,7 @@ class GameMenu extends StatelessWidget {
                 ),
                 modeButton(
                   'MineSweeper',
-                  'Avoid the mines',
+                  'Ledakan Semua Bombnya!',
                   FontAwesomeIcons.bomb,
                   Colors.orange,
                   width,
@@ -161,9 +161,16 @@ Padding circButton(IconData icon, BuildContext context) {
         } else if (icon == FontAwesomeIcons.lightbulb) {
           // Menampilkan tips secara random saat tombol lightbulb ditekan
           final List<String> tips = [
-            'Tip 1: Your first move is crucial, plan it wisely!',
-            'Tip 2: Try to create complete lines to clear the board efficiently.',
-            'Tip 3: Don\'t wait for the perfect piece, sometimes a simple move can be beneficial.',
+            'Tip 1: Rencanakan penempatan blok dengan cermat untuk memaksimalkan ruang dan menghindari terbentuknya celah yang sulit diisi.',
+            'Tip 2: Pahami berbagai cara merotasi blok untuk menyesuaikan dengan kebutuhan ruang yang ada di papan permainan.',
+            'Tip 3: DPrioritaskan untuk membersihkan baris-baris penuh secepat mungkin untuk menghindari tumpukan blok yang tinggi.',
+            'Tip 4: Kendalikan ular dengan hati-hati untuk menghindari menabrak diri sendiri atau tepi layar.',
+            'Tip 5: Perhatikan rencana jangka panjang untuk menghindari posisi yang sulit dikeluarkan.',
+            'Tip 6: Rencanakan penempatan blok dengan cermat untuk memaksimalkan ruang dan menghindari terbentuknya celah yang sulit diisi.',
+            'Tip 7: Gunakan angka-angka di sekitar kotak untuk menganalisis dan menentukan letak ranjau.',
+            'Tip 8: Gunakan dinding ular sendiri untuk memotong jalur dan mendapatkan makanan dengan efisien.',
+            'Tip 9: Mulai mengungkapkan kotak dari pinggir untuk memaksimalkan informasi yang diperoleh.',
+
             // Tambahkan lebih banyak tips sesuai kebutuhan
           ];
 
