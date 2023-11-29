@@ -89,11 +89,18 @@ class _GameBoardState extends State<GameBoard> {
     start = false;
     freezedMino.clear();
 
-    int currentScore = count; // Skor yang baru didapatkan
+    int currentScore = count; // Calculate the current score
 
     int highScore = await HighScoreManager.getHighScore();
     if (currentScore > highScore) {
-      await HighScoreManager.setHighScore(currentScore);
+      // Show a dialog for the user to input their name
+      String playerName = await _showNameInputDialog() ?? '';
+
+      if (playerName.isNotEmpty) {
+        // Update the high score in the database
+        await DatabaseHelper().insertHighScoreTetris(playerName, currentScore);
+        await HighScoreManager.setHighScore(currentScore);
+      }
     }
   }
 
