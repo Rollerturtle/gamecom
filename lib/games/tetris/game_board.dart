@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'mino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gamecom/db/database_helper.dart';
 
 class GameBoard extends StatefulWidget {
   @override
@@ -42,10 +44,57 @@ class _GameBoardState extends State<GameBoard> {
     setState(() {});
   }
 
-  void reset() {
+  Future<void> saveHighScore(int newScore) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Dapatkan skor tertinggi yang saat ini tersimpan
+    int currentHighScore = await HighScoreManager.getHighScore();
+
+    // Jika skor baru lebih tinggi dari skor tertinggi yang tersimpan
+    if (newScore > currentHighScore) {
+      String playerName = await _showNameInputDialog() ??
+          ''; // Jika nilai null, isi dengan string kosong
+      if (playerName.isNotEmpty) {
+        await DatabaseHelper().insertHighScoreTetris(playerName, newScore);
+        await HighScoreManager.setHighScore(newScore);
+      }
+    }
+  }
+
+  Future<String?> _showNameInputDialog() async {
+    TextEditingController _nameController = TextEditingController();
+    return await showDialog<String?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter your name'),
+          content: TextField(
+            controller: _nameController,
+            decoration: InputDecoration(hintText: 'Name'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(_nameController.text);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> reset() async {
     start = false;
-    mino = mino;
     freezedMino.clear();
+
+    int currentScore = count; // Skor yang baru didapatkan
+
+    int highScore = await HighScoreManager.getHighScore();
+    if (currentScore > highScore) {
+      await HighScoreManager.setHighScore(currentScore);
+    }
   }
 
   void hardDrop() {
@@ -130,8 +179,26 @@ class _GameBoardState extends State<GameBoard> {
                 height: width / 5,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Text('$count',
-                      style: Theme.of(context).textTheme.headline3),
+                  child: Column(
+                    children: [
+                      Text('Score: $count',
+                          style: Theme.of(context).textTheme.headline3),
+                      FutureBuilder<int>(
+                        future: HighScoreManager.getHighScore(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<int> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else {
+                            int highScore = snapshot.data ?? 0;
+                            return Text('High Score: $highScore',
+                                style: TextStyle(fontSize: 20));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -184,5 +251,19 @@ class _GameBoardState extends State<GameBoard> {
         ],
       ),
     );
+  }
+}
+
+class HighScoreManager {
+  static const String _highScoreKey = 'high_score';
+
+  static Future<int> getHighScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_highScoreKey) ?? 0;
+  }
+
+  static Future<void> setHighScore(int score) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_highScoreKey, score);
   }
 }

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gamecom/games/minesweeper/view.dart';
 import 'package:gamecom/games/snake/snake_name.dart';
 import 'package:gamecom/games/tetris/game_board.dart';
+import 'dart:math';
 
 class GameMenu extends StatelessWidget {
   const GameMenu({Key? key}) : super(key: key);
@@ -48,9 +49,9 @@ class GameMenu extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                circButton(FontAwesomeIcons.info),
-                circButton(FontAwesomeIcons.medal),
-                circButton(FontAwesomeIcons.lightbulb),
+                circButton(FontAwesomeIcons.info, context),
+                circButton(FontAwesomeIcons.medal, context),
+                circButton(FontAwesomeIcons.lightbulb, context),
               ],
             ),
             Wrap(
@@ -89,11 +90,106 @@ class GameMenu extends StatelessWidget {
   }
 }
 
-Padding circButton(IconData icon) {
+Padding circButton(IconData icon, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4.0),
     child: RawMaterialButton(
-      onPressed: () {},
+      onPressed: () {
+        if (icon == FontAwesomeIcons.info) {
+          // Menampilkan versi aplikasi pada dialog saat tombol info ditekan
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('App Version'),
+                content: Text(
+                    'Your App Version Here'), // Ganti dengan versi aplikasi yang sesuai
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else if (icon == FontAwesomeIcons.medal) {
+          // Menampilkan popup tabel kosong saat tombol medal ditekan
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Medal Information'),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Table 1:'),
+                    SizedBox(height: 8),
+                    // Tabel kosong pertama
+                    Table(
+                      border: TableBorder.all(),
+                      children: [
+                        // Isi tabel dapat ditambahkan di sini
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Text('Table 2:'),
+                    SizedBox(height: 8),
+                    // Tabel kosong kedua
+                    Table(
+                      border: TableBorder.all(),
+                      children: [
+                        // Isi tabel dapat ditambahkan di sini
+                      ],
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+        } else if (icon == FontAwesomeIcons.lightbulb) {
+          // Menampilkan tips secara random saat tombol lightbulb ditekan
+          final List<String> tips = [
+            'Tip 1: Your first move is crucial, plan it wisely!',
+            'Tip 2: Try to create complete lines to clear the board efficiently.',
+            'Tip 3: Don\'t wait for the perfect piece, sometimes a simple move can be beneficial.',
+            // Tambahkan lebih banyak tips sesuai kebutuhan
+          ];
+
+          // Mengambil tip secara acak dari daftar tips
+          final String randomTip = tips[Random().nextInt(tips.length)];
+
+          // Menampilkan tip pada dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Game Tip'),
+                content: Text(randomTip),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      },
       fillColor: Colors.white,
       shape: CircleBorder(),
       constraints: BoxConstraints(minHeight: 35, minWidth: 35),
