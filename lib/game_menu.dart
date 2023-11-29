@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gamecom/games/minesweeper/view.dart';
+import 'package:gamecom/games/snake/snake_name.dart';
+import 'package:gamecom/games/tetris/game_board.dart';
 
 class GameMenu extends StatelessWidget {
   const GameMenu({Key? key}) : super(key: key);
@@ -12,7 +15,7 @@ class GameMenu extends StatelessWidget {
       color: Color(0xFF272837),
       child: Center(
           child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 40, 0, 20),
+        padding: const EdgeInsets.fromLTRB(0, 40, 0, 80),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -53,14 +56,30 @@ class GameMenu extends StatelessWidget {
             Wrap(
               runSpacing: 16,
               children: [
-                modeButton('Tetris', 'Classic Tetris Game',
-                    FontAwesomeIcons.shapes, Colors.red, width),
-                modeButton('Snake Game', 'I Love Python', FontAwesomeIcons.cube,
-                    Colors.green, width),
-                modeButton('TicTacToe', 'Tic Tac Your Toe',
-                    FontAwesomeIcons.circle, Colors.blue, width),
-                modeButton('MineSweeper', 'Avoid the mines',
-                    FontAwesomeIcons.bomb, Colors.orange, width),
+                modeButton(
+                  'Tetris',
+                  'Classic Tetris Game',
+                  FontAwesomeIcons.shapes,
+                  Colors.red,
+                  width,
+                  context, // Add BuildContext here
+                ),
+                modeButton(
+                  'Snake Game',
+                  'I Love Python',
+                  FontAwesomeIcons.cube,
+                  Colors.green,
+                  width,
+                  context, // Add BuildContext here
+                ),
+                modeButton(
+                  'MineSweeper',
+                  'Avoid the mines',
+                  FontAwesomeIcons.bomb,
+                  Colors.orange,
+                  width,
+                  context, // Add BuildContext here
+                ),
               ],
             ),
           ],
@@ -83,67 +102,80 @@ Padding circButton(IconData icon) {
   );
 }
 
-GestureDetector modeButton(
+ElevatedButton modeButton(
   String title,
   String subtitle,
   IconData icon,
   Color color,
   double width,
+  BuildContext context,
 ) {
-  return GestureDetector(
+  return ElevatedButton(
+    onPressed: () {
+      // Menavigasikan pengguna ke halaman yang sesuai berdasarkan judul game
+      if (title == 'Tetris') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GameBoard()),
+        );
+      } else if (title == 'Snake Game') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SnakeGame()),
+        );
+      } else if (title == 'MineSweeper') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MinesweeperView()),
+        );
+      }
+    },
+    style: ElevatedButton.styleFrom(
+      primary: color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: EdgeInsets.all(15.0),
+      elevation: 4, // Memberikan elevasi untuk efek bayangan saat ditekan
+    ),
     child: Container(
       width: width,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0), // Padding kiri untuk judul
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                      fontFamily: 'Manrope',
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none,
+                  fontFamily: 'Manrope',
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0),
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.none,
+                    fontFamily: 'Manrope',
+                    color: Colors.white,
+                    fontSize: 12,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 6.0, left: 8.0), // Padding kiri untuk subjudul
-                  child: Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.none,
-                      fontFamily: 'Manrope',
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
-            child: FaIcon(
-              icon,
-              size: 35,
-              color: Colors.white,
-            ),
-          )
+          FaIcon(
+            icon,
+            size: 35,
+            color: Colors.white,
+          ),
         ],
       ),
     ),

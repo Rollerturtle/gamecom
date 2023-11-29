@@ -46,11 +46,11 @@ class _MinesweeperViewState extends State<MinesweeperView> {
     final restart = await showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('Você perdeu!'),
+              title: Text('You Lost!'),
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(context, true),
-                    child: Text('Reiniciar')),
+                    child: Text('Restart')),
                 TextButton(
                     onPressed: () => Navigator.pop(context, false),
                     child: Text('Ok')),
@@ -64,11 +64,11 @@ class _MinesweeperViewState extends State<MinesweeperView> {
   void _onWon() => showDialog(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text('Você ganhou!'),
+            title: Text('You Won!'),
             actions: [
               TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Reiniciar')),
+                  child: Text('Restart')),
             ],
           )).then((_) => _onRestart());
 
@@ -125,7 +125,7 @@ class _MinesweeperViewState extends State<MinesweeperView> {
                   6,
                   (i) => PopupMenuItem(
                         child: Text(
-                          'Dificuldade ${i + 1}',
+                          'Level ${i + 1}',
                         ),
                         value: i,
                       )),
@@ -137,7 +137,7 @@ class _MinesweeperViewState extends State<MinesweeperView> {
                 _onRestart();
               },
               initialValue: difficulty,
-              child: Center(child: Text('Dificuldade ${difficulty + 1}')),
+              child: Center(child: Text('Difficulties ${difficulty + 1}')),
             ),
             IconButton(
               icon: Icon(Icons.refresh),
@@ -162,7 +162,7 @@ class _MinesweeperViewState extends State<MinesweeperView> {
 
   Widget _fab(BuildContext context) => FloatingActionButton.extended(
         icon: Icon(isMarking ? Icons.edit : Icons.dangerous),
-        label: Text(isMarking ? 'MARCAR' : 'DETONAR'),
+        label: Text(isMarking ? 'Marking' : 'Detonate'),
         shape: isMarking
             ? StadiumBorder()
             : RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
