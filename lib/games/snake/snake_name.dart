@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamecom/game_menu.dart';
+import 'package:gamecom/db/database_helper.dart';
 
 enum Direction { up, down, left, right }
 
@@ -82,34 +83,58 @@ class _SnakeGameState extends State<SnakeGame> {
   }
 
   gameOverAlert() {
+    TextEditingController playerNameController = TextEditingController();
+    String playerName = '';
+    int score = snakePosition.length - 3;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Game Over'),
-          content: Text('Your score is ' + (snakePosition.length - 3).toString()),
-          actions: [
-            TextButton(
-              onPressed: () {
-                startGame();
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Main Lagi'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => GameMenu()),
-                );
-              },
-              child: const Text('Keluar'),
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Game Over'),
+              content: Column(
+                children: [
+                  Text('Skormu :  ' + score.toString()),
+                  TextField(
+                    controller: playerNameController,
+                    decoration: InputDecoration(labelText: 'Masukan Namamnu !'),
+                    onChanged: (value) {
+                      playerName = value;
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    startGame();
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Main Lagi'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    // Use your DatabaseHelper class to insert the score into the database
+                    await DatabaseHelper().insertHighScoreSnake(playerName, score);
+
+                    // Navigate to the main menu
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => GameMenu()),
+                    );
+                  },
+                  child: const Text('Keluar'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +192,7 @@ class _SnakeGameState extends State<SnakeGame> {
               },
               child: start
                   ? Text((snakePosition.length - 3).toString())
-                  : const Text(''),
+                  : const Text('Start'),
             ),
           ),
         ],
