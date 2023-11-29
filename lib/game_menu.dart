@@ -53,14 +53,14 @@ class GameMenu extends StatelessWidget {
             Wrap(
               runSpacing: 16,
               children: [
-                modeButton('Ranked Mode', 'Elevate your level',
-                    FontAwesomeIcons.trophy, Color(0xFF2F80ED), width),
-                modeButton('Time Trial', 'Elevate your level',
-                    FontAwesomeIcons.userClock, Color(0xFF2F80ED), width),
-                modeButton('Free Play', 'Elevate your level',
-                    FontAwesomeIcons.couch, Color(0xFF2F80ED), width),
-                modeButton('Pass & Play', 'Elevate your level',
-                    FontAwesomeIcons.userFriends, Color(0xFF2F80ED), width),
+                modeButton('Tetris', 'Classic Tetris Game',
+                    FontAwesomeIcons.shapes, Colors.red, width),
+                modeButton('Snake Game', 'I Love Python', FontAwesomeIcons.cube,
+                    Colors.green, width),
+                modeButton('TicTacToe', 'Tic Tac Your Toe',
+                    FontAwesomeIcons.circle, Colors.blue, width),
+                modeButton('MineSweeper', 'Avoid the mines',
+                    FontAwesomeIcons.bomb, Colors.orange, width),
               ],
             ),
           ],
@@ -94,36 +94,45 @@ GestureDetector modeButton(
     child: Container(
       width: width,
       decoration: BoxDecoration(
-          color: color, borderRadius: BorderRadius.all(Radius.circular(16))),
+        color: color,
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.none,
-                    fontFamily: 'Manrope',
-                    color: Colors.white,
-                    fontSize: 18,
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 8.0), // Padding kiri untuk judul
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none,
+                      fontFamily: 'Manrope',
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: Text(subtitle,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'Manrope',
-                        color: Colors.white,
-                        fontSize: 12,
-                      )),
-                )
+                  padding: const EdgeInsets.only(
+                      top: 6.0, left: 8.0), // Padding kiri untuk subjudul
+                  child: Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.none,
+                      fontFamily: 'Manrope',
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
