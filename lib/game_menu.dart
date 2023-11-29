@@ -4,8 +4,6 @@ import 'package:gamecom/games/minesweeper/view.dart';
 import 'package:gamecom/games/snake/snake_name.dart';
 import 'package:gamecom/games/tetris/game_board.dart';
 import 'package:gamecom/db/database_helper.dart';
-import 'package:collection/collection.dart';
-
 
 import 'dart:math';
 
@@ -104,15 +102,15 @@ Padding circButton(IconData icon, BuildContext context) {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Versi'),
+                title: Text('App Version'),
                 content: Text(
-                    '1.0.0'),
+                    'Your App Version Here'), // Ganti dengan versi aplikasi yang sesuai
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('Tutup'),
+                    child: Text('Close'),
                   ),
                 ],
               );
@@ -125,7 +123,7 @@ Padding circButton(IconData icon, BuildContext context) {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Leaderboard'),
+                title: Text('Medal Information'),
                 content: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -140,47 +138,39 @@ Padding circButton(IconData icon, BuildContext context) {
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Username',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
+                                child: Text('Username',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold)),
                               ),
                             ),
                             TableCell(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Skor',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
+                                child: Text('Skor',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
                         ),
-                        // Sort the scores in descending order
-                        ...snakeHighScores
-                            .where((scoreEntry) => scoreEntry['playerName'] != null)
-                            .toList()
-                            .cast<Map<String, dynamic>>()
-                            .sorted((a, b) => b['score'].compareTo(a['score']))
-                            .take(3) // Take only the top 3 scores
-                            .map((scoreEntry) => TableRow(
-                          children: [
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(scoreEntry['playerName'].toString()),
+                        for (var scoreEntry in snakeHighScores)
+                          TableRow(
+                            children: [
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      scoreEntry['playerName'].toString()),
+                                ),
                               ),
-                            ),
-                            TableCell(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(scoreEntry['score'].toString()),
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(scoreEntry['score'].toString()),
+                                ),
                               ),
-                            ),
-                          ],
-                        ))
-                            .toList(),
+                            ],
+                          ),
                       ],
                     ),
                   ],
