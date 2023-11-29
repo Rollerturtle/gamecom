@@ -39,6 +39,7 @@ dependencies:
   font_awesome_flutter: ^10.6.0
   sqflite: ^2.3.0
   shared_preferences: ^2.2.2
+  collection: ^1.15.0
 
 dev_dependencies:
   flutter_test:
