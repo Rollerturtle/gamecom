@@ -160,18 +160,18 @@ class _MinesweeperViewState extends State<MinesweeperView> {
         ),
       );
 
-  Widget _fab(BuildContext context) => FloatingActionButton.extended(
-        icon: Icon(isMarking ? Icons.edit : Icons.dangerous),
-        label: Text(isMarking ? 'Marking' : 'Detonate'),
-        shape: isMarking
-            ? StadiumBorder()
-            : RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        elevation: isMarking ? 4.0 : 16.0,
-        backgroundColor: isMarking ? Colors.orange : Colors.red,
-        onPressed: () => setState(
-          () => isMarking = !isMarking,
-        ),
-      );
+  // Widget _fab(BuildContext context) => FloatingActionButton.extended(
+  //       icon: Icon(isMarking ? Icons.edit : Icons.dangerous),
+  //       label: Text(isMarking ? 'Marking' : 'Detonate'),
+  //       shape: isMarking
+  //           ? StadiumBorder()
+  //           : RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+  //       elevation: isMarking ? 4.0 : 16.0,
+  //       backgroundColor: isMarking ? Colors.orange : Colors.red,
+  //       onPressed: () => setState(
+  //         () => isMarking = !isMarking,
+  //       ),
+  //     );
   List<Widget> _slivers(BuildContext context) => [
         _appbar(context),
         SliverFillRemaining(
@@ -206,7 +206,7 @@ class _MinesweeperViewState extends State<MinesweeperView> {
                     SnappingScrollPhysics(snapPoints: const [_kAppBarHeight]),
               ),
             ),
-            floatingActionButton: showFab ? _fab(context) : null,
+            // floatingActionButton: showFab ? _fab(context) : null,
           ),
         ),
       );
