@@ -117,7 +117,8 @@ class _SnakeGameState extends State<SnakeGame> {
                 TextButton(
                   onPressed: () async {
                     // Use your DatabaseHelper class to insert the score into the database
-                    await DatabaseHelper().insertHighScoreSnake(playerName, score);
+                    await DatabaseHelper()
+                        .insertHighScoreSnake(playerName, score);
 
                     // Navigate to the main menu
                     Navigator.pushReplacement(
@@ -134,7 +135,6 @@ class _SnakeGameState extends State<SnakeGame> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +159,7 @@ class _SnakeGameState extends State<SnakeGame> {
           },
           child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 760,
+            itemCount: 660,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 20,
             ),
