@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.tekartik.sqflite-mergeReleaseResources-8:/values-kk/values-kk.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ACER\\.gradle\\caches\\transforms-3\\3fdca236016d2d83b9bdc38945bf1b2f\\transformed\\core-1.6.0\\res\\values-kk\\values-kk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "com.tekartik.sqflite-merged_res-10:/values-kk/values-kk.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\ACER\\.gradle\\caches\\transforms-3\\3fdca236016d2d83b9bdc38945bf1b2f\\transformed\\core-1.6.0\\res\\values-kk\\values-kk.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

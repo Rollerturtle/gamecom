@@ -1,0 +1,18 @@
+<lint-module
+    format="1"
+    dir="G:\Adhwa_Moyafi\FolderKuliah\Semester 5\PemrogramanMobile\Project\Flutter\gamecom\android\app"
+    name=":app"
+    type="APP"
+    maven="android:app:"
+    gradle="7.3.0"
+    buildFolder="G:\Adhwa_Moyafi\FolderKuliah\Semester 5\PemrogramanMobile\Project\Flutter\gamecom\build\app"
+    bootClassPath="G:\Adhwa_Moyafi\Aplikasi\AndroidSdk\platforms\android-33\android.jar;G:\Adhwa_Moyafi\Aplikasi\AndroidSdk\build-tools\30.0.3\core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-33">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

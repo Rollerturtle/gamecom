@@ -1,0 +1,4 @@
+#Mon Dec 04 23:20:00 WIB 2023
+base.0=G\:\\Adhwa_Moyafi\\FolderKuliah\\Semester 5\\PemrogramanMobile\\Project\\Flutter\\gamecom\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
