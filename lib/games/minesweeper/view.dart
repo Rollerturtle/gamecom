@@ -206,7 +206,7 @@ class _MinesweeperViewState extends State<MinesweeperView> {
                     SnappingScrollPhysics(snapPoints: const [_kAppBarHeight]),
               ),
             ),
-            // floatingActionButton: showFab ? _fab(context) : null,
+            floatingActionButton: showFab ? _fab(context) : null,
           ),
         ),
       );
