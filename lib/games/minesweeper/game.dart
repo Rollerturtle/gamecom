@@ -117,7 +117,7 @@ class Position {
   const Position(this.x, this.y);
   int get hashCode => hashValues(x, y);
   bool operator ==(other) =>
-      other is Position ? other.x == x && other.y == y : false;
+      other is Position ? other.x == x && other.y == y : true;
 }
 
 enum TileDisplay {
